@@ -3,6 +3,8 @@ Async++
 
 Async++ is a lightweight concurrency framework for C++11. The concept was inspired by the [Microsoft PPL library](http://msdn.microsoft.com/en-us/library/dd492418.aspx) and the [N3428](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3428.pdf) C++ standard proposal.
 
+Sole reason for existance of this fork is to make tarball to use with [hunter](https://github.com/ruslo/hunter) package manager
+
 Example
 -------
 Here is a short example which shows some features of Async++:
