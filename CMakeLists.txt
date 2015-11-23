@@ -109,16 +109,51 @@ if (NOT USE_CXX_EXCEPTIONS)
 	endif()
 endif()
 
+####
+# Installation (https://github.com/forexample/package-example)
+
+# Layout. This works for all platforms:
+#   * <prefix/cmake/<PROJECT-NAME>
+#   * <prefix>/lib/
+#   * <prefix>/include/
+set(config_install_dir "cmake/${PROJECT_NAME}")
+set(include_install_dir "include")
+set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
+
+# Configuration
+set(version_config "${generated_dir}/${PROJECT_NAME}ConfigVersion.cmake")
+set(project_config "${generated_dir}/${PROJECT_NAME}Config.cmake")
+set(targets_export_name "${PROJECT_NAME}Targets")
+set(namespace "${PROJECT_NAME}::")
+
+# Include module with fuction 'write_basic_package_version_file'
+include(CMakePackageConfigHelpers)
+
+# Configure '<PROJECT-NAME>ConfigVersion.cmake'
+# Note: PROJECT_VERSION is used as a VERSION
+# write_basic_package_version_file(
+#     "${version_config}" COMPATIBILITY SameMajorVersion
+# )
+
+# Configure '<PROJECT-NAME>Config.cmake'
+# Use variables:
+#   * targets_export_name
+#   * PROJECT_NAME
+configure_package_config_file(
+    "cmake/Config.cmake.in"
+    "${project_config}"
+    INSTALL_DESTINATION "${config_install_dir}"
+)
+
 # Install the library and produce a CMake export script
 install(TARGETS Async++
-	EXPORT Async++
+	EXPORT "${targets_export_name}"
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib
+	INCLUDES DESTINATION include
 	FRAMEWORK DESTINATION Frameworks
 )
-export(EXPORT Async++)
-install(EXPORT Async++ DESTINATION cmake)
 if (APPLE AND BUILD_FRAMEWORK)
 	set_target_properties(Async++ PROPERTIES OUTPUT_NAME Async++ FRAMEWORK ON)
 	set_source_files_properties(${ASYNCXX_INCLUDE} PROPERTIES MACOSX_PACKAGE_LOCATION Headers/async++)
@@ -129,3 +164,19 @@ else()
 	install(FILES ${PROJECT_SOURCE_DIR}/include/async++.h DESTINATION include)
 	install(FILES ${ASYNCXX_INCLUDE} DESTINATION include/async++)
 endif()
+
+# Config
+#   * <prefix>/cmake/Async++/Async++Config.cmake
+#   * <prefix>/cmake/Async++/Async++ConfigVersion.cmake
+install(
+    FILES "${project_config}"
+    DESTINATION "${config_install_dir}"
+)
+
+# Config
+#   * <prefix>/cmake/Async++/FooTargets.cmake
+install(
+    EXPORT "${targets_export_name}"
+    NAMESPACE "${namespace}"
+    DESTINATION "${config_install_dir}"
+)
