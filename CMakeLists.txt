@@ -113,10 +113,10 @@ endif()
 # Installation (https://github.com/forexample/package-example)
 
 # Layout. This works for all platforms:
-#   * <prefix/cmake/<PROJECT-NAME>
+#   * <prefix/lib/cmake/<PROJECT-NAME>
 #   * <prefix>/lib/
 #   * <prefix>/include/
-set(config_install_dir "cmake/${PROJECT_NAME}")
+set(config_install_dir "lib/cmake/${PROJECT_NAME}")
 set(include_install_dir "include")
 set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
 
@@ -166,8 +166,8 @@ else()
 endif()
 
 # Config
-#   * <prefix>/cmake/Async++/Async++Config.cmake
-#   * <prefix>/cmake/Async++/Async++ConfigVersion.cmake
+#   * <prefix>/lib/cmake/Async++/Async++Config.cmake
+#   * <prefix>/lib/cmake/Async++/Async++ConfigVersion.cmake
 install(
     FILES "${project_config}"
     DESTINATION "${config_install_dir}"
