@@ -30,6 +30,11 @@ if (APPLE)
 	endif()
 endif()
 
+# Async++ only depends on the C++11 standard libraries, but some implementations
+# require the -pthread compiler flag to enable threading functionality.
+set(CMAKE_CXX_STANDARD 11)
+set(CXX_STANDARD_REQUIRED ON)
+
 # Add all source and header files so IDEs can see them
 set(ASYNCXX_INCLUDE
 	${PROJECT_SOURCE_DIR}/include/async++/aligned_alloc.h
@@ -61,11 +66,6 @@ source_group(include FILES ${PROJECT_SOURCE_DIR}/include/async++.h ${ASYNCXX_INC
 source_group(src FILES ${ASYNCXX_SRC})
 add_library(Async++ ${PROJECT_SOURCE_DIR}/include/async++.h ${ASYNCXX_INCLUDE} ${ASYNCXX_SRC})
 
-# Async++ only depends on the C++11 standard libraries, but some implementations
-# require the -pthread compiler flag to enable threading functionality.
-if (NOT MSVC)
-	target_compile_options(Async++ PRIVATE -std=c++11)
-endif()
 if (APPLE)
 	# Use libc++ on Mac because the shipped libstdc++ version is ancient
 	target_compile_options(Async++ PRIVATE -stdlib=libc++)
