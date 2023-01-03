@@ -39,12 +39,12 @@
 #include <vector>
 
 // Export declaration to make symbols visible for dll/so
-#ifdef LIBASYNC_STATIC
+#if defined(LIBASYNC_STATIC) || defined(ASYNCPLUSPLUS_STATICLIB)
 # define LIBASYNC_EXPORT
 # define LIBASYNC_EXPORT_EXCEPTION
 #else
 # ifdef _WIN32
-#  ifdef LIBASYNC_BUILD
+#  if defined(LIBASYNC_BUILD) || defined(BUILDING_LIBASYNCPLUSPLUS)
 #   define LIBASYNC_EXPORT __declspec(dllexport)
 #  else
 #   define LIBASYNC_EXPORT __declspec(dllimport)
